@@ -1,0 +1,83 @@
+# ==========================================
+# FinTrack Root Gitignore
+# Covers Next.js client, Express server,
+# Prisma ORM, secrets, logs, and OS caches
+# ==========================================
+
+# Dependencies
+node_modules/
+*/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment Variables & Secrets (CRITICAL)
+.env
+*.env
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+server/.env
+client/.env
+client/.env*.local
+
+# Allow example environment templates
+!.env.example
+!*/.env.example
+!.env.*.example
+!*/.env.*.example
+
+# Next.js Build Outputs & Cache
+.next/
+*/.next/
+out/
+*/out/
+build/
+*/build/
+dist/
+*/dist/
+dist-ssr/
+*/dist-ssr/
+.vercel
+
+# Prisma Generated Client & Engines
+generated/
+*/generated/
+server/generated/
+prisma/*.db
+prisma/*.db-journal
+
+# Logs
+logs
+*.log
+
+# Caches and Diagnostics
+.cache/
+*/.cache/
+.eslintcache
+.turbo
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# IDE & Editor Files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*~
