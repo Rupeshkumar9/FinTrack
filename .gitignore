@@ -28,11 +28,14 @@ client/.env*.local
 server/.env*
 client/.env*
 
-# Allow example environment templates
+# Allow example environment templates and test folder
 !.env.example
 !*/.env.example
 !.env.*.example
 !*/.env.*.example
+!*.env.example
+!*/*.env.example
+!test/*
 
 # Next.js Build Outputs & Cache
 .next/
