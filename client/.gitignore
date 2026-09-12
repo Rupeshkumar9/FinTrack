@@ -17,6 +17,9 @@ dist-ssr/
 .env.development.local
 .env.test.local
 .env.production.local
+.env*
+*.env
+*.env.*
 !.env.example
 
 # Logs
@@ -27,6 +30,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
 
 # Editor directories and files
 .vscode/*

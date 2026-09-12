@@ -5,11 +5,13 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
+    "build": "prisma generate",
     "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "commonjs",
   "type": "module",
   "dependencies": {
     "@prisma/client": "^5.22.0",

@@ -9,12 +9,27 @@ import budgetRoutes from './routes/budgetRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 
 dotenv.config();
+if (!process.env.DATABASE_URL) {
+  dotenv.config({ path: '.env.development' });
+}
 
 const app = express();
+
+app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173'];
+if (process.env.CLIENT_URL) {
+  allowedOrigins.push(process.env.CLIENT_URL);
+}
 
 app.use(
   cors({
     origin: process.env.CLIENT_URL || ['http://localhost:3000', 'http://localhost:5173'],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );
