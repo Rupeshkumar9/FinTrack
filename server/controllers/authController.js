@@ -29,7 +29,7 @@ const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET, {
 
 const register = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, currency } = req.body;
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) return res.status(400).json({ message: 'Email already exists' });
 
@@ -37,18 +37,19 @@ const register = async (req, res, next) => {
     const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=6366f1&color=fff&bold=true`;
 
     const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword, avatar },
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        avatar,
+        currency: currency || 'INR',
+      },
     });
 
     // Seed default categories
     const expenseCats = DEFAULT_EXPENSE_CATEGORIES.map((c) => ({ ...c, type: 'expense', userId: user.id }));
     const incomeCats = DEFAULT_INCOME_CATEGORIES.map((c) => ({ ...c, type: 'income', userId: user.id }));
     await prisma.category.createMany({ data: [...expenseCats, ...incomeCats] });
-    const categoriesData = [
-      ...DEFAULT_EXPENSE_CATEGORIES.map((c) => ({ ...c, type: 'expense', userId: user.id })),
-      ...DEFAULT_INCOME_CATEGORIES.map((c) => ({ ...c, type: 'income', userId: user.id })),
-    ];
-    await prisma.category.createMany({ data: categoriesData });
 
     const token = generateToken(user.id);
     res.status(201).json({
