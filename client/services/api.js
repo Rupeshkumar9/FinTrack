@@ -1,7 +1,16 @@
 import axios from 'axios';
 
+const getBaseURL = () => {
+  const raw = process.env.NEXT_PUBLIC_API_URL || '/api';
+  const clean = raw.replace(/\/+$/, '');
+  if (clean === '/api' || clean.endsWith('/api')) {
+    return clean;
+  }
+  return `${clean}/api`;
+};
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || '/api',
+  baseURL: getBaseURL(),
   headers: { 'Content-Type': 'application/json' },
 });
 

@@ -15,24 +15,34 @@ if (!process.env.DATABASE_URL) {
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173'];
-if (process.env.CLIENT_URL) {
-  allowedOrigins.push(process.env.CLIENT_URL);
-}
-
+// Robust CORS configuration supporting Vercel, custom CLIENT_URL, and local dev
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || ['http://localhost:3000', 'http://localhost:5173'],
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      // Allow requests with no origin (like mobile apps, curl, server-to-server)
+      if (!origin) return callback(null, true);
+
+      // Normalize CLIENT_URL from env (remove trailing slash)
+      const configuredClient = process.env.CLIENT_URL?.replace(/\/$/, '');
+      const allowed = ['http://localhost:3000', 'http://localhost:5173'];
+      if (configuredClient) allowed.push(configuredClient);
+
+      if (
+        allowed.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        origin.includes('localhost')
+      ) {
         return callback(null, true);
       }
+
       return callback(null, true);
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
+
 app.use(express.json());
 
 // Routes
