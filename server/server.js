@@ -8,10 +8,10 @@ import categoryRoutes from './routes/categoryRoutes.js';
 import budgetRoutes from './routes/budgetRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 
-dotenv.config();
-if (!process.env.DATABASE_URL) {
-  dotenv.config({ path: '.env.development' });
-}
+// Automatically load .env.production or .env.development based on NODE_ENV
+const env = process.env.NODE_ENV || 'development';
+dotenv.config({ path: `.env.${env}` });
+dotenv.config(); // fallback to .env
 
 const app = express();
 
